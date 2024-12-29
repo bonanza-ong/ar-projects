@@ -7,33 +7,34 @@
     <script src="https://unpkg.com/aframe-gps-camera/dist/aframe-gps-camera.min.js"></script>
     <script src="https://unpkg.com/aframe-gps-entity-place/dist/aframe-gps-entity-place.min.js"></script>
     <script>
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                console.log("Geolocation permission granted");
-                },
-                (error) => {
-                console.error("Geolocation permission denied", error);
-                alert("Por favor, habilite a geolocalização para usar esta funcionalidade.");
-                }
-            );
-        } else {
-          alert("Geolocalização não suportada pelo navegador.");
-        }
+      // Solicitar localização e câmera
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => console.log("Localização permitida."),
+          (error) => alert("Por favor, ative a localização no navegador.")
+        );
+      } else {
+        alert("Geolocalização não suportada pelo navegador.");
+      }
 
-        navigator.mediaDevices.getUserMedia({ video: true }).catch((error) => {
-            console.error("Camera permission denied", error);
-            alert("Por favor, habilite a câmera para usar esta funcionalidade.");
-        });
+      navigator.mediaDevices.getUserMedia({ video: true }).then(() => {
+        console.log("Câmera permitida.");
+      }).catch((error) => {
+        alert("Por favor, permita o uso da câmera no navegador.");
+      });
     </script>
   </head>
   <body style="margin: 0; overflow: hidden;">
-    <a-scene embedded arjs>
+    <a-scene
+      vr-mode-ui="enabled: false"
+      embedded
+      arjs="sourceType: webcam; debugUIEnabled: false;"
+    >
       <!-- GPS Camera -->
-      <a-camera gps-camera gpsMinDistance="5" rotation-reader></a-camera>
+      <a-camera gps-camera gpsMinDistance="5" rotation-reader>
+      </a-camera>
 
-
-      <!-- Texto -->
+      <!-- Texto de teste -->
       <a-text
         gps-entity-place="latitude: -30.0277; longitude: -51.2287;"
         value="Este é um monumento histórico!"
@@ -46,9 +47,4 @@
       <a-video
         gps-entity-place="latitude: -30.019273; longitude: -51.139956;"
         src="https://www.youtube.com/embed/fivmexUcI54"
-        scale="20 20 20"
-        look-at="[gps-camera]">
-      </a-video>
-    </a-scene>
-  </body>
-</html>
+        scale="50 50 50"
