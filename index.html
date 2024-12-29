@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Monumento AR</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.rawgit.com/jeromeetienne/ar.js/2.0.0/aframe/build/aframe-ar.min.js"></script>
+    <script src="https://unpkg.com/aframe-gps-camera/dist/aframe-gps-camera.min.js"></script>
+    <script src="https://unpkg.com/aframe-gps-entity-place/dist/aframe-gps-entity-place.min.js"></script>
+  </head>
+  <body style="margin: 0; overflow: hidden;">
+    <a-scene embedded arjs>
+      <!-- GPS Camera -->
+      <a-camera gps-camera rotation-reader>
+      </a-camera>
+
+      <!-- Texto -->
+      <a-text
+        gps-entity-place="latitude: -30.0277; longitude: -51.2287;"
+        value="Este é um monumento histórico!"
+        color="white"
+        scale="10 10 10"
+        look-at="[gps-camera]">
+      </a-text>
+
+      <!-- Vídeo -->
+      <a-video
+        gps-entity-place="latitude: -30.019273; longitude: -51.139956;"
+        src="https://www.youtube.com/embed/fivmexUcI54"
+        scale="20 20 20"
+        look-at="[gps-camera]">
+      </a-video>
+    </a-scene>
+  </body>
+</html>
