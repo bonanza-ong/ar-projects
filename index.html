@@ -6,19 +6,39 @@
     <script src="https://cdn.rawgit.com/jeromeetienne/ar.js/2.0.0/aframe/build/aframe-ar.min.js"></script>
     <script src="https://unpkg.com/aframe-gps-camera/dist/aframe-gps-camera.min.js"></script>
     <script src="https://unpkg.com/aframe-gps-entity-place/dist/aframe-gps-entity-place.min.js"></script>
+    <script>
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                console.log("Geolocation permission granted");
+                },
+                (error) => {
+                console.error("Geolocation permission denied", error);
+                alert("Por favor, habilite a geolocalização para usar esta funcionalidade.");
+                }
+            );
+        } else {
+          alert("Geolocalização não suportada pelo navegador.");
+        }
+
+        navigator.mediaDevices.getUserMedia({ video: true }).catch((error) => {
+            console.error("Camera permission denied", error);
+            alert("Por favor, habilite a câmera para usar esta funcionalidade.");
+        });
+    </script>
   </head>
   <body style="margin: 0; overflow: hidden;">
     <a-scene embedded arjs>
       <!-- GPS Camera -->
-      <a-camera gps-camera rotation-reader>
-      </a-camera>
+      <a-camera gps-camera gpsMinDistance="5" rotation-reader></a-camera>
+
 
       <!-- Texto -->
       <a-text
         gps-entity-place="latitude: -30.0277; longitude: -51.2287;"
         value="Este é um monumento histórico!"
         color="white"
-        scale="10 10 10"
+        scale="50 50 50"
         look-at="[gps-camera]">
       </a-text>
 
