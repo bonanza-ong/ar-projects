@@ -10,16 +10,17 @@
       // Solicitar localização e câmera
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
-          (position) => console.log("Localização permitida."),
+          (position) => console.log("Localização permitida:", position),
           (error) => alert("Por favor, ative a localização no navegador.")
         );
       } else {
         alert("Geolocalização não suportada pelo navegador.");
       }
 
-      navigator.mediaDevices.getUserMedia({ video: true }).then(() => {
+      navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).then(() => {
         console.log("Câmera permitida.");
       }).catch((error) => {
+        console.error("Erro ao acessar a câmera:", error);
         alert("Por favor, permita o uso da câmera no navegador.");
       });
     </script>
@@ -28,7 +29,7 @@
     <a-scene
       vr-mode-ui="enabled: false"
       embedded
-      arjs="sourceType: webcam; debugUIEnabled: false;"
+      arjs="sourceType: webcam; cameraParameters: { facingMode: environment }; debugUIEnabled: false;"
     >
       <!-- GPS Camera -->
       <a-camera gps-camera gpsMinDistance="5" rotation-reader>
@@ -48,3 +49,8 @@
         gps-entity-place="latitude: -30.0193110; longitude: -51.1399590;"
         src="https://www.youtube.com/embed/fivmexUcI54"
         scale="50 50 50"
+        look-at="[gps-camera]">
+      </a-video>
+    </a-scene>
+  </body>
+</html>
